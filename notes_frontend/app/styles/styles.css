@@ -1,0 +1,365 @@
+/* Root variables and global reset from style guide */
+
+/* PUBLIC_INTERFACE */
+/** Global CSS variables for the notepad UI. */
+:root {
+  --bg-canvas: #f4e8c8;
+  --bg-canvas-alt: #efe0b9;
+  --paper-edge-burn: #7a4f2f;
+  --paper-shadow: rgba(0, 0, 0, 0.25);
+  --rule-line: #bdae8b;
+  --ring-metal: #3b2c22;
+  --ink-primary: #2a2a2a;
+  --ink-secondary: #4b4035;
+  --ink-muted: #6f604e;
+  --accent: #9d6b3a;
+  --accent-ink: #3a2414;
+  --focus: #c89247;
+  --danger: #9b3a2b;
+  --success: #3d6b4a;
+  --link: #5a3d1b;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  color: var(--ink-primary);
+  background: radial-gradient(ellipse at center, #f0e6cf 0%, #e7d7b1 60%, #d9c08c 100%);
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+a {
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+a:hover {
+  filter: brightness(0.9);
+}
+
+/* App shell */
+.app {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+/* Top navigation bar */
+.topnav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  color: var(--accent-ink);
+  background: linear-gradient(#f7e7c8, #e9d3a9);
+  border-bottom: 1px solid #b08a56;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.topnav .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.topnav .search {
+  flex: 1;
+  display: flex;
+  max-width: 680px;
+  gap: 8px;
+}
+
+.topnav .search input {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #b08a56;
+  background: #f9edd2;
+  color: var(--ink-primary);
+  outline: none;
+}
+.topnav .search input:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.topnav .user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Notepad and paper visuals */
+.paper-wrap {
+  display: grid;
+  place-items: center;
+  padding: 20px 12px 40px;
+}
+
+.notepad {
+  position: relative;
+  width: clamp(320px, 92vw, 1080px); /* allow room for sidebar and editor columns */
+  border-radius: 8px;
+  background:
+    radial-gradient(ellipse at center, var(--bg-canvas) 40%, var(--bg-canvas-alt) 70%, #e2cda3 85%),
+    repeating-linear-gradient(to bottom, transparent 0 20px, var(--rule-line) 20px 21px);
+  padding: 64px 28px 28px;
+  box-shadow:
+    0 12px 28px var(--paper-shadow),
+    inset 0 0 60px 10px var(--paper-edge-burn);
+  z-index: 10;
+}
+
+.header-spiral {
+  position: absolute;
+  top: 8px; left: 0; right: 0;
+  height: 40px;
+  pointer-events: none;
+  z-index: 20;
+}
+
+/* Toolbar */
+.toolbar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+  background: transparent;
+  z-index: 30;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: linear-gradient(#f7e7c8, #e9d3a9);
+  border: 1px solid #b08a56;
+  color: var(--accent-ink);
+  font-weight: 600;
+  cursor: pointer;
+  transition: 180ms ease;
+  text-decoration: none;
+}
+.btn:hover { filter: brightness(1.05); transform: translateY(-1px); }
+.btn:active { filter: brightness(0.98); transform: translateY(0); }
+.btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.btn-danger { border-color: #8e2e20; color: #4a1410; background: linear-gradient(#f3d0c9, #ebb3aa); }
+
+/* Layout inside notepad: sidebar + editor area */
+.sheet {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 900px) {
+  .sheet {
+    grid-template-columns: 300px 1fr;
+    gap: 24px;
+  }
+}
+
+/* Sidebar */
+.sidebar {
+  display: none;
+  position: relative;
+  background: rgba(244, 232, 200, 0.9);
+  border: 1px solid #c8ad7f;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: -8px 0 20px rgba(0,0,0,0.07);
+  height: 100%;
+}
+@media (min-width: 900px) {
+  .sidebar { display: block; }
+}
+
+.sidebar .section {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.sidebar .list {
+  display: grid;
+  gap: 6px;
+  max-height: 50vh;
+  overflow: auto;
+  padding-right: 6px;
+}
+
+.note-item {
+  display: grid;
+  gap: 2px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: #f6ebcf;
+  border: 1px solid #cbb085;
+  cursor: pointer;
+}
+.note-item[aria-current="true"] {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+  background: #f3e5be;
+}
+.note-item .title {
+  font-weight: 600;
+  color: var(--ink-primary);
+}
+.note-item .meta {
+  font-size: 12px;
+  color: var(--ink-muted);
+}
+
+/* Tag pills */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.tag-pill {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #edd9b1;
+  border: 1px solid #c8ad7f;
+  font-size: 12px;
+  cursor: pointer;
+}
+.tag-pill[aria-pressed="true"] {
+  background: #e9cf9b;
+  outline: 2px solid var(--focus);
+}
+
+/* Editor area */
+.editor {
+  display: grid;
+  align-content: start;
+}
+
+.note-form {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  row-gap: 12px;
+}
+
+.label-sr {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0);
+  white-space: nowrap; border: 0;
+}
+
+.note-title {
+  font-size: 22px; font-weight: 700;
+  background: transparent;
+  border: none; outline: none;
+  padding: 4px 2px;
+  color: var(--ink-primary);
+  width: 100%;
+  letter-spacing: 0.2px;
+  line-height: 1.3;
+  border-bottom: 2px solid transparent;
+}
+.note-title::placeholder { color: var(--ink-muted); }
+.note-title:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+.note-body {
+  resize: vertical;
+  min-height: 52vh;
+  font-size: 16px;
+  line-height: 1.4;
+  background: transparent;
+  color: var(--ink-primary);
+  border: none;
+  padding: 8px 2px 24px;
+  caret-color: var(--accent);
+}
+.note-body::placeholder { color: var(--ink-muted); }
+.note-body:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* Footer statusbar */
+.statusbar {
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--ink-muted);
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #efe6cf;
+  color: var(--ink-primary);
+  border-left: 4px solid var(--success);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+  z-index: 100;
+}
+
+/* Auth forms */
+.auth-card {
+  width: clamp(320px, 92vw, 420px);
+  border-radius: 10px;
+  border: 1px solid #c8ad7f;
+  background:
+    radial-gradient(ellipse at center, var(--bg-canvas) 40%, var(--bg-canvas-alt) 70%, #e2cda3 85%),
+    repeating-linear-gradient(to bottom, transparent 0 20px, var(--rule-line) 20px 21px);
+  padding: 24px;
+  box-shadow:
+    0 12px 28px var(--paper-shadow),
+    inset 0 0 60px 10px var(--paper-edge-burn);
+}
+
+.auth-card h1 {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+}
+
+.auth-card form {
+  display: grid;
+  gap: 12px;
+}
+
+.input {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #b08a56;
+  background: #f9edd2;
+  color: var(--ink-primary);
+  outline: none;
+}
+.input:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+.error {
+  color: #6b1f12;
+  background: #f8d0c9;
+  border: 1px solid #d09088;
+  padding: 8px 10px;
+  border-radius: 6px;
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .btn { transition: none; }
+}
